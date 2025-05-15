@@ -21,11 +21,11 @@ subprojects {
     // Layout: <bc>/main/java  y <bc>/test/java
     sourceSets {
         main {
-            java.srcDirs = ['main/java']
+            java.srcDirs = ['main']
             resources.srcDirs = []
         }
         test {
-            java.srcDirs = ['test/java']
+            java.srcDirs = ['test']
             resources.srcDirs = []
         }
     }
