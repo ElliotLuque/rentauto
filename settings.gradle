@@ -1,0 +1,6 @@
+rootProject.name = 'rentauto'
+
+include 'shared', 'rental'
+
+project(':shared').projectDir = file('src/shared')
+project(':rental').projectDir = file('src/rental')
