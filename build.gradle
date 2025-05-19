@@ -18,7 +18,7 @@ allprojects {
 subprojects {
     apply plugin: 'java'
 
-    // Layout: <bc>/main/java  y <bc>/test/java
+    // Layout: <bc>/main y <bc>/test
     sourceSets {
         main {
             java.srcDirs = ['main']
@@ -36,12 +36,6 @@ subprojects {
         testImplementation 'org.mockito:mockito-core:5.11.0'
     }
     test { useJUnitPlatform() }
-}
-
-
-dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
 test {
