@@ -88,8 +88,6 @@ public final class Customer extends AggregateRoot {
         // For now, we'll just assume all customers can rent
     }
 
-    // Getters
-
     public CustomerId id() {
         return id;
     }
