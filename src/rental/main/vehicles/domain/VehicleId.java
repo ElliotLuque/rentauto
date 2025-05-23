@@ -8,4 +8,8 @@ public final class VehicleId extends UUIDValueObject {
     public VehicleId(UUID value) {
         super(value);
     }
+
+    public static VehicleId random() {
+        return random(VehicleId.class);
+    }
 }

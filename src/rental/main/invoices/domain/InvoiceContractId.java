@@ -9,7 +9,7 @@ public final class InvoiceContractId extends UUIDValueObject {
         super(value);
     }
 
-    public static InvoiceContractId create(UUID value) {
-        return new InvoiceContractId(value);
+    public static InvoiceContractId random() {
+        return random(InvoiceContractId.class);
     }
 }
