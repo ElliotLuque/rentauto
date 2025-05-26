@@ -5,7 +5,6 @@ import bookings.domain.BookingId;
 import bookings.domain.BookingRepository;
 
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Use case for finding a booking by its ID
@@ -19,11 +18,10 @@ public final class FindBookingByIdUseCase {
 
     /**
      * Find a booking by its ID
-     * @param id The booking ID as a string
+     * @param id The booking ID
      * @return The booking if found
      */
-    public Optional<Booking> execute(String id) {
-        BookingId bookingId = new BookingId(UUID.fromString(id));
-        return repository.findById(bookingId);
+    public Optional<Booking> execute(BookingId id) {
+        return repository.findById(id);
     }
 }

@@ -4,42 +4,39 @@ import bookings.domain.Booking;
 import bookings.domain.BookingId;
 import bookings.domain.BookingRepository;
 import bookings.domain.BookingStatus;
-
-import java.util.UUID;
+import com.rentauto.shared.domain.bus.event.EventBus;
 
 /**
  * Use case for updating a booking's status
  */
 public final class UpdateBookingStatusUseCase {
     private final BookingRepository repository;
+    private final EventBus eventBus;
 
-    public UpdateBookingStatusUseCase(BookingRepository repository) {
+    public UpdateBookingStatusUseCase(BookingRepository repository, EventBus eventBus) {
         this.repository = repository;
+        this.eventBus = eventBus;
     }
 
     /**
      * Update a booking's status
-     * @param request The update request containing booking ID and new status
+     * @param bookingId The ID of the booking to update
+     * @param newStatus The new status for the booking
      * @throws IllegalArgumentException if booking not found
      */
-    public void execute(UpdateBookingStatusRequest request) {
+    public void execute(BookingId bookingId, BookingStatus newStatus) {
         // Find the booking
-        BookingId bookingId = new BookingId(UUID.fromString(request.bookingId()));
         Booking booking = repository.findById(bookingId)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
-        
+
         // Create a new booking with the updated status
         // Note: Since Booking is immutable, we need to create a new instance
-        Booking updatedBooking = new Booking(
-                booking.id(),
-                booking.dateRange(),
-                new BookingStatus(request.newStatus()),
-                booking.customerId(),
-                booking.vehicleId(),
-                booking.price()
-        );
-        
+        // TODO: CREATE BOOKING
+
         // Save the updated booking
-        repository.save(updatedBooking);
+        //repository.save(updatedBooking);
+
+        // Publish domain events
+        //eventBus.publish(updatedBooking.pullDomainEvents());
     }
 }

@@ -1,21 +1,23 @@
-package bookings.application.cancel;
+package bookings.application.close;
 
 import bookings.domain.Booking;
+import bookings.domain.BookingFinalMileage;
 import bookings.domain.BookingId;
 import bookings.domain.BookingRepository;
 import com.rentauto.shared.domain.bus.event.EventBus;
 import vehicles.domain.Vehicle;
+import vehicles.domain.VehicleMileage;
 import vehicles.domain.VehicleRepository;
 
 /**
- * Use case for canceling a booking
+ * Use case for closing a booking (vehicle return)
  */
-public final class CancelBookingUseCase {
+public final class CloseBookingUseCase {
     private final BookingRepository bookingRepository;
     private final VehicleRepository vehicleRepository;
     private final EventBus eventBus;
 
-    public CancelBookingUseCase(
+    public CloseBookingUseCase(
             BookingRepository bookingRepository,
             VehicleRepository vehicleRepository,
             EventBus eventBus
@@ -26,25 +28,27 @@ public final class CancelBookingUseCase {
     }
 
     /**
-     * Cancel a booking
+     * Close a booking (vehicle return)
      * @param id The booking ID
+     * @param finalMileage The final mileage of the vehicle
      * @throws IllegalArgumentException if booking not found
-     * @throws IllegalStateException if booking is not in RESERVED state
+     * @throws IllegalStateException if booking is not in ACTIVE state
      */
-    public void execute(BookingId id) {
+    public void execute(BookingId id, BookingFinalMileage finalMileage) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
 
         Vehicle vehicle = vehicleRepository.findById(booking.vehicleId())
                 .orElseThrow(() -> new IllegalArgumentException("Vehicle not found"));
 
-        Booking canceledBooking = booking.cancel();
+        Booking closedBooking = booking.close(finalMileage);
 
-        // Make the vehicle available again
+        // Update the vehicle mileage and status
+        vehicle.updateMileage(new VehicleMileage(finalMileage.value()));
         vehicle.returnVehicle();
         vehicleRepository.save(vehicle);
 
-        bookingRepository.save(canceledBooking);
-        eventBus.publish(canceledBooking.pullDomainEvents());
+        bookingRepository.save(closedBooking);
+        eventBus.publish(closedBooking.pullDomainEvents());
     }
 }

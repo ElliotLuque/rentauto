@@ -1,4 +1,4 @@
-package bookings.application.cancel;
+package bookings.application.activate;
 
 import bookings.domain.Booking;
 import bookings.domain.BookingId;
@@ -8,14 +8,14 @@ import vehicles.domain.Vehicle;
 import vehicles.domain.VehicleRepository;
 
 /**
- * Use case for canceling a booking
+ * Use case for activating a booking (vehicle pickup)
  */
-public final class CancelBookingUseCase {
+public final class ActivateBookingUseCase {
     private final BookingRepository bookingRepository;
     private final VehicleRepository vehicleRepository;
     private final EventBus eventBus;
 
-    public CancelBookingUseCase(
+    public ActivateBookingUseCase(
             BookingRepository bookingRepository,
             VehicleRepository vehicleRepository,
             EventBus eventBus
@@ -26,25 +26,26 @@ public final class CancelBookingUseCase {
     }
 
     /**
-     * Cancel a booking
+     * Activate a booking (vehicle pickup)
      * @param id The booking ID
+     * @param depositPaid Whether the deposit has been paid
      * @throws IllegalArgumentException if booking not found
-     * @throws IllegalStateException if booking is not in RESERVED state
+     * @throws IllegalStateException if booking is not in RESERVED state or deposit is not paid
      */
-    public void execute(BookingId id) {
+    public void execute(BookingId id, boolean depositPaid) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
 
         Vehicle vehicle = vehicleRepository.findById(booking.vehicleId())
                 .orElseThrow(() -> new IllegalArgumentException("Vehicle not found"));
 
-        Booking canceledBooking = booking.cancel();
+        Booking activatedBooking = booking.activate(depositPaid);
 
-        // Make the vehicle available again
-        vehicle.returnVehicle();
+        // Update the vehicle status to RENTED
+        vehicle.rent();
         vehicleRepository.save(vehicle);
 
-        bookingRepository.save(canceledBooking);
-        eventBus.publish(canceledBooking.pullDomainEvents());
+        bookingRepository.save(activatedBooking);
+        eventBus.publish(activatedBooking.pullDomainEvents());
     }
 }

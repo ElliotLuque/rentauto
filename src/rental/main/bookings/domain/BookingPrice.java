@@ -1,32 +1,36 @@
 package bookings.domain;
 
-import com.rentauto.shared.domain.valueobject.IntValueObject;
+import com.rentauto.shared.domain.AggregateRoot;
 
-public final class BookingPrice extends IntValueObject {
-    public BookingPrice(int value) {
-        super(value);
-        
-        if (value < 0) {
-            throw new IllegalArgumentException("Booking price cannot be negative");
-        }
+/**
+ * Value object representing the price for a booking
+ * Includes daily rate and deposit
+ */
+public final class BookingPrice extends AggregateRoot {
+    private final BookingDailyRate dailyRate;
+    private final BookingDeposit deposit;
+
+    public BookingPrice(BookingDailyRate dailyRate, BookingDeposit deposit) {
+        this.dailyRate = dailyRate;
+        this.deposit = deposit;
     }
-    
-    public BookingPrice add(BookingPrice other) {
-        return new BookingPrice(this.value() + other.value());
+
+    public BookingDailyRate dailyRate() {
+        return dailyRate;
     }
-    
-    public BookingPrice subtract(BookingPrice other) {
-        int result = this.value() - other.value();
-        if (result < 0) {
-            throw new IllegalArgumentException("Result of price subtraction cannot be negative");
-        }
-        return new BookingPrice(result);
+
+    public BookingDeposit deposit() {
+        return deposit;
     }
-    
-    public BookingPrice multiply(int factor) {
-        if (factor < 0) {
-            throw new IllegalArgumentException("Multiplication factor cannot be negative");
+
+    public int calculateTotalPrice(int days) {
+        if (days <= 0) {
+            throw new IllegalArgumentException("Days must be positive");
         }
-        return new BookingPrice(this.value() * factor);
+        return dailyRate.value() * days;
+    }
+
+    public int calculateTotalWithDeposit(int days) {
+        return calculateTotalPrice(days) + deposit.value();
     }
 }
