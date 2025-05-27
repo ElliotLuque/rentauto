@@ -1,8 +1,9 @@
-package bookings.domain.events;
+package vehicles.application.update;
 
+import bookings.domain.events.BookingClosedDomainEvent;
 import com.rentauto.shared.domain.bus.event.DomainEventSubscriber;
-import vehicles.application.update_mileage.UpdateVehicleMileageUseCase;
-import vehicles.application.update_status.UpdateVehicleStatusUseCase;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Service;
 import vehicles.domain.VehicleId;
 import vehicles.domain.VehicleMileage;
 import vehicles.domain.VehicleStatus;
@@ -14,12 +15,13 @@ import java.util.UUID;
  * 1. Updates the vehicle status to AVAILABLE
  * 2. Updates the vehicle mileage with the final mileage from the booking
  */
+@Service
 @DomainEventSubscriber({BookingClosedDomainEvent.class})
-public final class BookingClosedDomainEventSubscriber {
+public final class UpdateVehicleMileageAndStatusWhenBookingClosed {
     private final UpdateVehicleStatusUseCase updateVehicleStatusUseCase;
     private final UpdateVehicleMileageUseCase updateVehicleMileageUseCase;
 
-    public BookingClosedDomainEventSubscriber(
+    public UpdateVehicleMileageAndStatusWhenBookingClosed(
             UpdateVehicleStatusUseCase updateVehicleStatusUseCase,
             UpdateVehicleMileageUseCase updateVehicleMileageUseCase
     ) {
@@ -27,8 +29,8 @@ public final class BookingClosedDomainEventSubscriber {
         this.updateVehicleMileageUseCase = updateVehicleMileageUseCase;
     }
 
+    @EventListener
     public void on(BookingClosedDomainEvent event) {
-        // Get data from the event
         String vehicleIdStr = (String) event.toPrimitives().get("vehicleId");
         int finalMileageValue = (int) event.toPrimitives().get("finalMileage");
 

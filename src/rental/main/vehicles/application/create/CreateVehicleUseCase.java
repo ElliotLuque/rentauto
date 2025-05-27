@@ -1,6 +1,7 @@
 package vehicles.application.create;
 
 import com.rentauto.shared.domain.bus.event.EventBus;
+import org.springframework.stereotype.Service;
 import vehicles.domain.Vehicle;
 import vehicles.domain.VehicleBrand;
 import vehicles.domain.VehicleColor;
@@ -15,6 +16,7 @@ import vehicles.domain.VehicleYear;
 /**
  * Use case for creating a new vehicle
  */
+@Service
 public final class CreateVehicleUseCase {
     private final VehicleRepository repository;
     private final EventBus eventBus;

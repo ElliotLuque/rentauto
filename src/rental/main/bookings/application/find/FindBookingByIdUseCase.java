@@ -3,12 +3,14 @@ package bookings.application.find;
 import bookings.domain.Booking;
 import bookings.domain.BookingId;
 import bookings.domain.BookingRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 /**
  * Use case for finding a booking by its ID
  */
+@Service
 public final class FindBookingByIdUseCase {
     private final BookingRepository repository;
 

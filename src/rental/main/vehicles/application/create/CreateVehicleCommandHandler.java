@@ -1,6 +1,7 @@
 package vehicles.application.create;
 
 import com.rentauto.shared.domain.bus.command.CommandHandler;
+import org.springframework.stereotype.Service;
 import vehicles.domain.VehicleBrand;
 import vehicles.domain.VehicleColor;
 import vehicles.domain.VehicleId;
@@ -10,6 +11,7 @@ import vehicles.domain.VehicleModel;
 import vehicles.domain.VehicleType;
 import vehicles.domain.VehicleYear;
 
+@Service
 public final class CreateVehicleCommandHandler implements CommandHandler<CreateVehicleCommand> {
     private final CreateVehicleUseCase useCase;
 

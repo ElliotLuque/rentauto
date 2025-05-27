@@ -4,12 +4,14 @@ import bookings.domain.Booking;
 import bookings.domain.BookingId;
 import bookings.domain.BookingRepository;
 import com.rentauto.shared.domain.bus.event.EventBus;
+import org.springframework.stereotype.Service;
 import vehicles.domain.Vehicle;
 import vehicles.domain.VehicleRepository;
 
 /**
  * Use case for canceling a booking
  */
+@Service
 public final class CancelBookingUseCase {
     private final BookingRepository bookingRepository;
     private final VehicleRepository vehicleRepository;

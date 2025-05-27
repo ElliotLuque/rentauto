@@ -1,7 +1,8 @@
-package vehicles.application.update_mileage;
+package vehicles.application.update;
 
 
 import com.rentauto.shared.domain.bus.event.EventBus;
+import org.springframework.stereotype.Service;
 import vehicles.domain.Vehicle;
 import vehicles.domain.VehicleId;
 import vehicles.domain.VehicleMileage;
@@ -10,6 +11,7 @@ import vehicles.domain.VehicleRepository;
 /**
  * Use case for updating a vehicle's mileage
  */
+@Service
 public final class UpdateVehicleMileageUseCase {
     private final VehicleRepository repository;
     private final EventBus eventBus;

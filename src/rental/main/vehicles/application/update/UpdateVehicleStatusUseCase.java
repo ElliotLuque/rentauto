@@ -1,7 +1,8 @@
-package vehicles.application.update_status;
+package vehicles.application.update;
 
 
 import com.rentauto.shared.domain.bus.event.EventBus;
+import org.springframework.stereotype.Service;
 import vehicles.domain.Vehicle;
 import vehicles.domain.VehicleId;
 import vehicles.domain.VehicleRepository;
@@ -10,6 +11,7 @@ import vehicles.domain.VehicleStatus;
 /**
  * Use case for updating a vehicle's status
  */
+@Service
 public final class UpdateVehicleStatusUseCase {
     private final VehicleRepository repository;
     private final EventBus eventBus;

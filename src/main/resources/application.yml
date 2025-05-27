@@ -1,0 +1,31 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    connection-timeout: 5000
+    
+  # Publisher confirms and returns
+  publisher-confirm-type: correlated
+  publisher-returns: true
+  
+  # Listener configuration
+  listener:
+    simple:
+      concurrency: 5
+      max-concurrency: 10
+      prefetch: 1
+      default-requeue-rejected: false
+      retry:
+        enabled: true
+        initial-interval: 1000
+        max-attempts: 3
+        multiplier: 1.5
+        max-interval: 10000
+
+# Domain event bus configuration
+domain-event-bus:
+  exchange: domain_events
+  dead-letter-exchange: domain_events.dlx
+  retry-exchange: domain_events.retry
