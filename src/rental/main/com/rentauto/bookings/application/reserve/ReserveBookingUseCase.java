@@ -1,6 +1,5 @@
 package com.rentauto.bookings.application.reserve;
 
-import bookings.domain.*;
 import com.rentauto.bookings.domain.Booking;
 import com.rentauto.bookings.domain.BookingDateRange;
 import com.rentauto.bookings.domain.BookingId;

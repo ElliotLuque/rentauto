@@ -43,9 +43,9 @@ public class RabbitMQEventBus implements EventBus {
         properties.setHeader("x-occurred-on", event.occurredOn());
         properties.setHeader("x-event-name", event.eventName());
 
-        Message message = rabbitTemplate.getMessageConverter().toMessage(body, properties);
+        Message message = this.rabbitTemplate.getMessageConverter().toMessage(body, properties);
         
-        rabbitTemplate.send(exchangeName, routingKey, message);
+        rabbitTemplate.send(this.exchangeName, routingKey, message);
     }
 
     private Map<String, Serializable> createMessageBody(DomainEvent event) {
